@@ -1,0 +1,44 @@
+{% load humanize  %}
+{% load filters %}
+<a href="{{ product.get_absolute_url }}" class="utf_listing_item-container" data-marker-id="1">
+    <div class="utf_listing_item">
+        <img src="{{ product.image.url }}" alt="">
+        <span class="tag">{{ product.category }}</span>
+        {% if product.is_available %}
+            <span class="utf_open_now">موجود</span>
+
+        {% else %}
+            <span class="utf_closed">نا موجود</span>
+        {% endif %}
+
+        <div class="utf_listing_item_content">
+            <div class="utf_listing_prige_block">
+
+                 <span class="utf_meta_listing_price">
+                      {% if product.is_available %}
+
+                          {% if product.price == 0 %}
+                              رایگان
+                          {% else %}
+                              <i class="fa fa-money"></i>{{ product.price | price }} تومان
+                          {% endif %}
+
+                      {% else %}
+
+                      {% endif %}
+                 </span>
+
+            </div>
+
+            <h3>{{ product.title }}</h3>
+            <span>{{ product.description | truncatechars:60 }}</span>
+
+        </div>
+    </div>
+
+    <div class="utf_star_rating_section">
+        <span class="utf_view_count"><i class="fa fa-eye"></i> {{ product.visit }}+</span>
+        <span>بازدید ها </span>
+    </div>
+
+</a>

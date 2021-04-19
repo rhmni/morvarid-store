@@ -1,0 +1,58 @@
+{% extends 'store_account/shared/base.html' %}
+{% load  filters %}
+{% block dashboard %}
+
+    <div class="col-md-12 margin-top-50">
+        <div class="notification notice closeable">
+            <p><strong>توجه : </strong></p>
+            <p>در صورتی که از زمان پرداخت صورت حساب شما 48 ساعت می گذرد, ولی هنوز به دستتان نرسیده است با <a
+                    href="{% url 'store_ticket:tickets' %}"><strong>پشتیلانی</strong></a>
+                سایت تماس
+                بگیرید.</p>
+            <br>
+            <p><strong>با تشکر, مدیریت سایت</strong></p>
+        </div>
+    </div>
+
+
+    {% if carts %}
+
+        <div class="col-lg-12 col-md-12">
+            <div class="utf_dashboard_list_box invoices with-icons margin-top-20">
+                <h4>لیست صورتحساب ها</h4>
+                <ul>
+
+                    {% for cart in carts %}
+
+                        <li>
+                            <i class="utf_list_box_icon fa fa-paste"></i> <strong> {{ cart.final_price | price }} تومان <span
+                                class="paid">پرداخت شده</span></strong>
+                            <ul>
+                                <li><span>شماره فاکتور : </span> {{ cart.id }}</li>
+                                <li><span>تاریخ پرداخت : </span> {{ cart.pay_date }}</li>
+                            </ul>
+                            <div class="buttons-to-right">
+                                <a href="{% url 'store_cart:invoice_detail' cart.id %}" target="_blank" class="button gray">
+                                    <i class="sl sl-icon-printer"></i> صورتحساب</a>
+                            </div>
+                        </li>
+
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="col-md-12 margin-top-50 margin-bottom-100">
+            <div class="notification warning closeable">
+                <p>شما تاکنون هیچ خریدی نداشته اید.</p>
+            </div>
+        </div>
+
+
+    {% endif %}
+
+
+{% endblock %}

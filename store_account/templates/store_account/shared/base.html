@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% include 'store_account/shared/header_ref.html' %}
+    {% block costume_css %}{% endblock %}
+</head>
+<body>
+<!-- Wrapper -->
+<div id="main_wrapper">
+    {% include 'store_account/shared/header.html' %}
+    <!-- Dashboard -->
+    <div id="dashboard">
+        <a href="#" class="utf_dashboard_nav_responsive"><i class="fa fa-reorder"></i>منو داشبورد</a>
+
+        {% include 'store_account/shared/profile_nav.html' %}
+
+        <div class="utf_dashboard_content">
+            {% block dashboard %}{% endblock %}
+        </div>
+
+    </div>
+</div>
+
+</body>
+{% include 'store_account/shared/footer_ref.html' %}
+{% block costume_js %}{% endblock %}
+<script>
+
+    {% if messages %}
+        {% for message in messages %}
+            Swal.fire({
+                title: '{{ message }}!',
+                text: '',
+                icon: '{{ message.extra_tags }}',
+                confirmButtonText: 'تایید'
+            })
+        {% endfor %}
+    {% endif %}
+
+    {% if form.errors %}
+
+        Swal.fire({
+            title: 'لطفا خطا را بر طرف و دوباره امتحان کنید',
+            text: '',
+            icon: 'error',
+            confirmButtonText: 'تایید'
+        })
+
+    {% endif %}
+
+</script>
+</html>

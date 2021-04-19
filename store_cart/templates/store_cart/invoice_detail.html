@@ -1,0 +1,109 @@
+{% load static %}
+{% load filters %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صورتحساب خرید</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'main/images/favicon.png' %}">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{% static 'main/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/invoice.css' %}">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,800&display=swap&subset=latin-ext,vietnamese"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700,800" rel="stylesheet" type="text/css">
+</head>
+<body>
+<a href="javascript:window.print()" class="print-button">چاپ صورتحساب</a>
+<!-- Invoice -->
+<div id="invoice">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="logo"><a href="{% url 'store_main:home' %}"><img src="{% static 'main/images/logo.png' %}" alt=""></a></div>
+        </div>
+        <div class="col-md-6">
+            <p id="details">
+                <strong>شماره فاکتور : </strong> {{ cart.id }}<br>
+                <strong>آدرس ایمیل : </strong> {{ setting.email }}<br>
+                <strong>تلفن : </strong> 0{{ setting.mobile }}
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="invoice_title">صورتحساب خرید</h2>
+        </div>
+        <div class="col-md-6">
+            <p><strong>صاحب سفارش :</strong><br>
+                {{ cart.user.first_name }} {{ cart.user.last_name }}
+            </p>
+        </div>
+        <div class="col-md-6 fl_right">
+            <p><strong>ارسال شده به :</strong><br>
+                {{ cart.user.address }}
+            </p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>روش پرداخت :</strong><br>
+                اینترنتی
+            </p>
+        </div>
+        <div class="col-md-6 fl_right">
+            <p><strong>تاریخ پرداخت :</strong><br>
+                {{ cart.pay_date | date }}
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="margin-top-20">
+                <tr>
+                    <th>محصول</th>
+                    <th>تعداد</th>
+                    <th>قیمت واحد </th>
+                    <th>قیمت کل</th>
+                </tr>
+                {% for cart_item in cart.cartitems.all %}
+
+                    <tr>
+                        <td>{{ cart_item.product }}</td>
+                        <td>{{ cart_item.quantity }}</td>
+                        <td>{{ cart_item.price | price }}</td>
+                        <td>  {{ cart_item.total_price | price }} تومان</td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-12">
+            <table id="totals">
+                <tr>
+                    <th>جمع کل</th>
+                    <th><span>  {{ cart.total_price | price }} تومان</span></th>
+                </tr>
+                <tr>
+                    <th>مالیات</th>
+                    <th><span>  0 تومان</span></th>
+                </tr>
+                <tr>
+                    <th>تخفیف</th>
+                    <th><span>  {{ cart.discount | price }} تومان</span></th>
+                </tr>
+                <tr>
+                    <th>پرداخت شده</th>
+                    <th><span>  {{ cart.final_price | price }} تومان </span></th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

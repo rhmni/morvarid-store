@@ -1,0 +1,79 @@
+<div class="utf_right_side">
+    <div class="header_widget">
+        <a href="#dialog_signin_part" class="button border sign-in popup-with-zoom-anim">
+            <i class="fa fa-sign-in"></i>
+            ورود به سایت
+        </a>
+    </div>
+</div>
+<div id="dialog_signin_part" class="zoom-anim-dialog mfp-hide">
+    <div class="small_dialog_header">
+        <h3>ورود به سایت</h3>
+    </div>
+    <div class="utf_signin_form style_one">
+        <ul class="utf_tabs_nav">
+            <li class=""><a href="#tab1">ورود</a></li>
+            <li><a href="#tab2">ثبت نام</a></li>
+        </ul>
+        <div class="tab_container alt">
+            <div class="tab_content" id="tab1" style="display:none;">
+                <form method="post" action="{% url 'store_main:login_user' %}" class="login">
+                    {% csrf_token %}
+                    <p class="utf_row_form utf_form_wide_block">
+                        <label for="username">
+                            {{ login_form.email }}
+                        </label>
+                    </p>
+                    <p class="utf_row_form utf_form_wide_block">
+                        <label for="password">
+                            {{ login_form.password }}
+                        </label>
+                    </p>
+                    <div class="utf_row_form utf_form_wide_block form_forgot_part"><span
+                            class="lost_password fl_left"> <a
+                            href="{% url 'store_account:reset_password' %}">رمز عبور خود را فراموش کرده اید ؟</a> </span>
+                        <div class="checkboxes fl_right">
+                            <input id="remember-me" type="checkbox" name="check">
+                            <label for="remember-me">مرا به خاطر بسپار</label>
+                        </div>
+                    </div>
+                    <div class="utf_row_form">
+                        <input type="submit" class="button border margin-top-5" name="login" value="ورود"/>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab_content" id="tab2" style="display:none;">
+                <form method="post" action="{% url 'store_main:register_user' %}" class="register">
+                    {% csrf_token %}
+                    <p class="utf_row_form utf_form_wide_block">
+                        <label for="username2">
+                            {{ register_form.email }}
+                        </label>
+                    </p>
+                    <p class="utf_row_form utf_form_wide_block">
+                        <label for="email2">
+                            {{ register_form.first_name }}
+                        </label>
+                    </p>
+                    <p class="utf_row_form utf_form_wide_block">
+                        <label for="password1">
+                            {{ register_form.last_name }}
+                        </label>
+                    </p>
+                    <p class="utf_row_form utf_form_wide_block">
+                        <label for="password2">
+                            {{ register_form.password1 }}
+                        </label>
+                    </p>
+                    <p class="utf_row_form utf_form_wide_block">
+                        <label for="password2">
+                            {{ register_form.password2 }}
+                        </label>
+                    </p>
+                    <input type="submit" class="button border fw margin-top-10" name="register" value="ثبت نام"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

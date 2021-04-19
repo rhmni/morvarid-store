@@ -1,0 +1,125 @@
+{% extends 'store_account/shared/base.html' %}
+{% load static %}
+{% block dashboard %}
+    <div id="titlebar" class="dashboard_gradient">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>محصولات مورد علاقه</h2>
+                <nav id="breadcrumbs">
+                    <ul>
+                        <li><a href="{% url 'store_main:home' %}">صفحه اصلی</a></li>
+                        <li>محصولات مورد علاقه</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+
+    {% if page_obj %}
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="utf_dashboard_list_box margin-top-0 margin-bottom-50">
+                    <h4><i class="sl sl-icon-heart"></i> محصولات مورد علاقه</h4>
+                    <ul>
+                        {% for object in page_obj %}
+
+                            <li>
+                                <div class="utf_list_box_listing_item">
+                                    <div>
+                                        <a href="{{ object.product.get_absolute_url }}"><img class="img-rounded" width="250px"
+                                                                                             height="170px"
+                                                                                             src="{{ object.product.image.url }}"
+                                                                                             alt=""></a>
+
+                                    </div>
+                                    <div class="utf_list_box_listing_item_content">
+                                        <div class="inner">
+                                            <h3>{{ object.product.title }}</h3>
+                                            <br>
+                                            <span><i class="fa-money fa"></i>
+                                                {% if object.product.is_available %}
+                                                    {% if object.product.price == 0 %}
+                                                        <span class="text-success">رایگان</span>
+                                                    {% else %}
+                                                        {{ object.product.price }} تومان
+                                                    {% endif %}
+                                                {% else %}
+                                                    <span class="text-danger">ناموجود</span>
+                                                {% endif %}
+                                            </span>
+                                            <div class="utf_star_rating_section">
+                                                <div class="utf_counter_star_rating"> بازدید ها : ( {{ object.product.visit }} )
+                                                </div>
+                                            </div>
+                                            <p>{{ object.product.description | truncatewords:20 }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="buttons-to-right"><a
+                                        href="{% url 'store_favorite:delete_favorite_product' object.product.id %}"
+                                        class="button gray"><i class="sl sl-icon-close"></i> حذف</a>
+                                </div>
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+                </div>
+
+
+
+                {% if is_paginated %}
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="clearfix"></div>
+                            <div class="utf_pagination_container_part margin-top-30 margin-bottom-30">
+                                <nav class="pagination">
+                                    <ul>
+
+                                        {% if page_obj.has_previous %}
+                                            <li><a href="?page={{ page_obj.previous_page_number }}"><i
+                                                    class="sl sl-icon-arrow-right"></i></a></li>
+                                        {% endif %}
+
+                                        {% for page in page_obj.paginator.page_range %}
+                                            <li>
+                                                <a href="?page={{ page }}"{% if page == page_obj.number %}
+                                                   class="current-page"{% endif %} >{{ page }}</a>
+                                            </li>
+                                        {% endfor %}
+
+                                        {% if page_obj.has_next %}
+                                            <li><a href="?page={{ page_obj.next_page_number }}"><i
+                                                    class="sl sl-icon-arrow-left"></i></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="notification warning closeable margin-bottom-100">
+            <p>شما هیچ محصول مورد علاقه ای ندارید.</p>
+        </div>
+
+        <div class="row margin-bottom-30">
+            <div class="col-md-8 col-md-offset-2 margin-top-110 margin-bottom-100">
+                <h3 class="headline_part centered">محصولی وجود ندارد</h3>
+            </div>
+        </div>
+
+    {% endif %}
+
+
+{% endblock %}

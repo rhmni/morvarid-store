@@ -1,0 +1,143 @@
+{% extends 'store_account/shared/base.html' %}
+{% load filters %}
+
+{% block dashboard %}
+
+    <div id="titlebar" class="dashboard_gradient">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>سبد خرید</h2>
+                <nav id="breadcrumbs">
+                    <ul>
+                        <li><a href="{% url 'store_main:home' %}">خانه</a></li>
+                        <li>سبد خرید</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+
+    {% if cart_items %}
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+
+                <div class="utf_dashboard_list_box margin-top-0">
+                    <h4><i class="sl sl-icon-basket"></i> سبد خرید </h4>
+                    <ul>
+                        {% for cart_item in cart_items %}
+                            <li>
+                                <div class="utf_list_box_listing_item">
+                                    <div class="utf_list_box_listing_item-im">
+                                        <a href="{{ cart_item.product.get_absolute_url }}">
+                                            <img width="300px" height="200px" src="{{ cart_item.product.image.url }}"
+                                                 alt="{{ cart_item.product.title }}"></a>
+                                    </div>
+                                    <div class="utf_list_box_listing_item_content">
+                                        <div class="inner">
+                                            <h3>{{ cart_item.product.title }}</h3>
+                                            <span><i class="fa fa-money"></i>
+
+                                                {% if cart_item.product.price == 0 %}
+                                                    رایگان
+                                                {% else %}
+                                                    {{ cart_item.product.price | price }} تومان
+                                                {% endif %}
+
+                                                </span>
+                                            <span><i class="fa fa-dollar"></i>
+
+                                                {% if cart_item.product.price == 0 %}
+                                                    رایگان
+                                                {% else %}
+                                                    {{ cart_item.total_price | price }} تومان
+                                                {% endif %}
+                                                    </span>
+                                            <div class="utf_star_rating_section"> تعداد :
+                                                <div class="utf_counter_star_rating h5"> ( {{ cart_item.quantity }} )
+                                                </div>
+                                            </div>
+                                            <p>{{ cart_item.product.description | truncatewords:20 }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="buttons-to-right">
+                                    <a href="{% url 'store_cart:delete_cart_item' cart_item.product.id %}" class="button gray">
+                                        <i class="fa fa-trash-o"></i>حذف</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="utf_dashboard_list_box">
+                    <div class="col-md-5 margin-top-20 margin-bottom-75">
+                        <div class="opening-hours">
+                            <h4><i class="fa fa-calculator"></i>جمع فاکتور</h4>
+                            <ul class="">
+                                <li>جمع کل : <span>  {{ cart.total_price | price }} تومان </span></li>
+                                <li>مالیات : <span>  0 تومان </span></li>
+                                <li>تخفیف : <span>  {{ cart.discount | price }} تومان </span></li>
+                                <li>قابل پرداخت : <span>  {{ cart.final_price | price }} تومان </span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-md-offset-2 ">
+                        <div class="margin-top-20">
+                            <h4><i class="sl sl-icon-basket"></i> کد تخفیف </h4>
+
+                            <ul class="utf_dashboard_list_box margin-bottom-45">
+                                <li class="total-costs">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <div class="col-md-8">
+                                            {{ coupon_form.code }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="submit" class="coupon_code" value="اعمال">
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </li>
+
+                            </ul>
+
+                            <h4><i class="fa fa-credit-card"></i> پرداخت نهایی </h4>
+                            <ul class="utf_dashboard_list_box margin-buttom-20">
+                                <li>
+                                    <div class="col-md-12">
+                                        <a href="{% url 'store_cart:pay_cart' %}" class="utf_progress_button button fullwidth_block
+                                        margin-top-5">پرداخت
+                                        <div class="progress-bar"></div>
+                                        </a>
+                                    </div>
+                                    <br>
+                                    <br>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+
+    {% else %}
+
+        <div class="container margin-bottom-100">
+            <div class="row margin-top-120">
+                <div class="col-md-6 col-md-offset-3 margin-top-120">
+                    <h3 class="text-center">
+                        سبد خرید شما خالی است
+                    </h3>
+                </div>
+
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

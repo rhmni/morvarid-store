@@ -1,0 +1,55 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+    <div class="container margin-top-60">
+        <div class="row">
+            <div class="col-md-8">
+                <section id="contact" class="margin-bottom-70">
+                    <h4><i class="sl sl-icon-phone"></i> ارتباط با ما</h4>
+                    <form id="contactform" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                {{ form.first_name }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.last_name }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.subject }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.email }}
+                            </div>
+
+                            <div class="col-md-12">
+                                {{ form.text }}
+                            </div>
+
+                        </div>
+                        <input type="submit" class="submit button" id="submit" value="ارسال">
+                    </form>
+                </section>
+            </div>
+
+            <div class="col-md-4">
+                <div class="utf_box_widget margin-bottom-70">
+                    <h3><i class="sl sl-icon-map"></i> آدرس دفتر</h3>
+                    <div class="utf_sidebar_textbox">
+                        <ul class="utf_contact_detail">
+                            <li><strong>تلفن همراه : </strong> <span>0{{ setting.mobile }}</span></li>
+                            <li><strong>آدرس ایمیل : </strong> <span><a href="mailto:{{ setting.email }}">{{ setting.email }}</a></span>
+                            </li>
+                            <li><strong>آدرس : </strong>
+                                <span>{{ setting.address }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

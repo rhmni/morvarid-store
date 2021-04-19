@@ -1,0 +1,68 @@
+{% extends 'store_account/shared/base.html' %}
+
+
+{% block dashboard %}
+
+
+    <div id="titlebar" class="dashboard_gradient">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>پشتیبانی</h2>
+                <nav id="breadcrumbs">
+                    <ul>
+                        <li><a href="{% url 'store_main:home' %}">صفحه اصلی</a></li>
+                        <li>پشتیبانی</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="row margin-bottom-50">
+        <div class="col-lg-12 col-md-12">
+            <div class="utf_dashboard_list_box margin-top-0">
+                <h4 class="gray"><i class="sl sl-icon-user"></i> پشتیبانی</h4>
+                <div class="utf_messages_block_inner">
+
+
+                    <div class="utf_message_content_part">
+
+
+                        {% for ticket in ticket_list %}
+
+                            <div class="utf_message_content_item {% if not ticket.from_user.is_superuser %}send_user{% endif %}">
+                                <div class="utf_message_user"><img src="{{ ticket.from_user.avatar.url }}" alt="user_avatar"/>
+                                </div>
+                                <div class="utf_message_text ">
+
+                                    <div class="utf_message_headline_item centered">
+                                        <div class="utf_message_headline_text">
+                                            <h5>
+                                                {{ ticket.from_user.first_name }} {{ ticket.from_user.last_name }}
+                                                {% if ticket.from_user.is_superuser %}<i>مدیر سایت</i>{% endif %}
+                                            </h5>
+                                            <span><i class="fa fa-clock-o"></i> {{ ticket.send_date | timesince }} پیش</span>
+                                        </div>
+                                    </div>
+
+                                    <p>{{ ticket.text }}</p>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                        <div class="clearfix"></div>
+                        <div class="utf_message_reply_block">
+                            <form action="{% url 'store_ticket:add_ticket' %}" method="post">
+                                {% csrf_token %}
+                                {{ form.text }}
+                                <button class="button">ارسال پیام</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

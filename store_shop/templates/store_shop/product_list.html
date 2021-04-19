@@ -1,0 +1,118 @@
+{% extends 'shared/base.html' %}
+
+
+{% block content %}
+
+
+    <div class="container margin-top-40">
+        <div class="row">
+
+            <div class="col-lg-8 col-md-8 listing_grid_item">
+                <div class="listing_filter_block">
+                    <div class="col-md-10 col-xs-10">
+
+                    </div>
+                    <div class="col-md-2 col-xs-2">
+                        <div class="utf_layout_nav">
+                            <a class="grid active"><i class="fa fa-th"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    {% for product in page_obj %}
+                        <div class="col-lg-6 col-md-12 pull-right">
+                            {% include 'store_shop/shared/product_component.html' %}
+                        </div>
+                    {% empty %}
+                        <div class="col-md-12 margin-bottom-50">
+                            <div class="notification error closeable text-center">
+                                <p>محصولی یافت نشد!</p>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+
+                </div>
+                <div class="clearfix"></div>
+
+
+
+                {% if page_obj %}
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="utf_pagination_container_part margin-top-20 margin-bottom-70">
+                                <nav class="pagination">
+                                    <ul>
+
+                                        {% if page_obj.has_previous %}
+                                            <li>
+                                                <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ page_obj.previous_page_number }}"><i
+                                                        class="sl sl-icon-arrow-right"></i></a></li>
+                                        {% endif %}
+
+                                        {% for page in page_obj.paginator.page_range %}
+                                            <li>
+                                                <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ page }}"
+                                                        {% if page == page_obj.number %}
+                                                   class="current-page"{% endif %} >{{ page }}</a>
+                                            </li>
+                                        {% endfor %}
+
+                                        {% if page_obj.has_next %}
+                                            <li>
+                                                <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ page_obj.next_page_number }}"><i
+                                                        class="sl sl-icon-arrow-left"></i></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4 col-md-4">
+                <div class="sidebar">
+                    <div class="utf_box_widget margin-bottom-35">
+                        <form action="" method="get">
+                            <h3><i class="sl-icon-magnifier sl"></i>فیلتر ها </h3>
+
+                            <div class="row with-forms">
+                                <div class="col-md-12">
+                                    <div class="input-with-icon"><i class="sl sl-icon-magnifier"></i>
+                                        {{ search_form.search }}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <button class="button fullwidth_block margin-top-5">جستجو</button>
+                        </form>
+                    </div>
+                    {# ------------------ categories ------------------  #}
+                    <div class="utf_box_widget margin-top-35 margin-bottom-75">
+                        <h3><i class="sl sl-icon-folder-alt"></i> دسته بندی ها</h3>
+                        <ul class="utf_listing_detail_sidebar">
+                            <li><i class="fa fa-angle-double-right"></i> <a href="{% url 'store_shop:product_list' %}">همه دسته
+                                بندی ها</a></li>
+                            {% for category in categories %}
+                                <li><i class="fa fa-angle-double-right"></i> <a
+                                        href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+{% endblock %}

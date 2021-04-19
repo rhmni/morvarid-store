@@ -1,0 +1,34 @@
+{% load static %}
+{% load footer_tags %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% include 'shared/header_ref.html' %}
+</head>
+<body>
+<div id="main_wrapper">
+    {% include 'shared/header.html' %}
+    {% block content %}{% endblock %}
+    {% footer_component %}
+</div>
+</body>
+{% include 'shared/footer_ref.html' %}
+{% block costume_js %}{% endblock %}
+<script>
+    {% if messages %}
+        {% for message in messages %}
+            Swal.fire({
+                title: '{{ message }}!',
+                text: '',
+                icon: '{{ message.extra_tags }}',
+                confirmButtonText: 'تایید'
+            })
+        {% endfor %}
+    {% endif %}
+</script>
+</html>

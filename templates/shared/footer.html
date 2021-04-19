@@ -1,0 +1,50 @@
+{% load static %}
+<!-- Footer -->
+<section class="utf_cta_area_item utf_cta_area2_block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="utf_subscribe_block clearfix">
+                    <div class="col-md-4 col-sm-5">
+                        <div class="contact-form-action">
+                            <form method="post" action="{% url 'store_setting:newsletter' %}">
+                                {% csrf_token %}
+                                <span class="la la-envelope-o"></span>
+                                {{ form.email }}
+                                <button class="utf_theme_btn" type="submit">عضویت</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-sm-7">
+                        <div class="section-heading">
+                            <h2 class="utf_sec_title_item utf_sec_title_item2">عضویت در خبرنامه</h2>
+                            <p class="utf_sec_meta">
+                                برای دریافت آخرین به روزرسانی ها و اطلاعات عضو شوید.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="footer" class="footer_sticky_part">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6 col-sm-12 col-xs-12 pull-right">
+                <h4>درباره ما</h4>
+                <p>{{ setting.about_us }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="footer_copyright_part">{{ setting.copyright }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="bottom_backto_top">
+    <a href="#"></a>
+</div>

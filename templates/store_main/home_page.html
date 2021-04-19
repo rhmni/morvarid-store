@@ -1,0 +1,143 @@
+{% extends 'shared/base.html' %}
+{% load filters %}
+{% load static %}
+
+{% block content %}
+
+
+
+    <div class="search_container_block overlay_dark_part">
+        <div class="main_inner_search_block">
+            <div class="container">
+                <div class="row">
+                    <form action="{% url 'store_shop:product_list' %}">
+
+                        <div class="col-md-12">
+                            <h2>{{ setting.site_title }}</h2>
+                            <h4>{{ setting.site_description }}</h4>
+                            <div class="main_input_search_part">
+                                <div class="main_input_search_part_item">
+                                    {{ search_form.search }}
+                                </div>
+                                <button class="button">جستجو</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="utf_video_container">
+            <video poster="{% static 'main/images/search_video_bg.jpg' %}" loop autoplay muted>
+                <source src="{% static 'main/images/search_bg_video.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="headline_part centered margin-top-75">محبوب ترین محصولات</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container_categories_box margin-top-5 margin-bottom-30">
+
+
+                    {% for category in most_popular_category %}
+
+                        <a href="{{ category.get_absolute_url }}" class="utf_category_small_box_part"><i
+                                class="im-icon-Folder im"></i>
+                            <h4>{{ category.title }}</h4>
+                            <span>{{ category.categoryproducts.all | length }}</span>
+                        </a>
+
+                    {% endfor %}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="fullwidth_block margin-top-65 padding-top-75 padding-bottom-70" data-background-color="#f9f9f9">
+        <div class="container">
+            <div class="row slick_carousel_slider">
+                <div class="col-md-12">
+                    <h3 class="headline_part centered margin-bottom-45"> پربازدید ترین ها <span>پربازدید ترین محصولات سایت</span>
+                    </h3>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="simple_slick_carousel_block utf_dots_nav">
+
+                            {% for product in most_visited_product %}
+                                <div class="utf_carousel_item pull-right">
+
+                                    {% include 'store_shop/shared/product_component.html' %}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <a href="{% url 'store_main:home' %}" class="flip-banner parallax" data-background="{% static 'main/images/store.jpg' %}"
+       data-color="#000" data-color-opacity="0.85" data-img-width="2500" data-img-height="1666">
+        <div class="flip-banner-content">
+            <h2 class="flip-visible">فروشگاه اینترنتی مروارید</h2>
+        </div>
+    </a>
+
+
+    <div class="container padding-bottom-70">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="headline_part centered margin-bottom-35 margin-top-70"> ارزان ترین ها
+                    <span>ارزان ترین محصولات سایت</span></h3>
+            </div>
+
+
+
+            {% for product in most_inexpensive_product %}
+
+                <div class="col-md-4">
+                    <a href="{{ product.get_absolute_url }}" class="img-box"
+                       data-background-image="{{ product.image.url }}">
+                        <div class="utf_img_content_box visible">
+                            <h4>{{ product.title }}</h4>
+                            <span>
+                                {% if product.is_available %}
+
+                                    {% if product.price == 0 %}
+                                        رایگان
+                                    {% else %}
+                                        {{ product.price | price }} تومان
+                                    {% endif %}
+
+                                {% else %}
+
+                                {% endif %}
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+            {% endfor %}
+
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+

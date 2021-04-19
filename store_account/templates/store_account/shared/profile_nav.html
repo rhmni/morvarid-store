@@ -1,0 +1,45 @@
+<div class="utf_dashboard_navigation">
+    <div class="utf_dashboard_navigation_inner_block">
+        <ul>
+
+            <li class="{% if request.path == '/profile' %}active{% endif %}">
+                <a href="{% url 'store_account:profile' %}"><i class="sl sl-icon-user"></i> پروفایل من</a>
+            </li>
+
+            {% if request.user.is_superuser %}
+
+                <li><a target="_blank" href="/admin"><i class="sl-icon-login sl"></i> ورود به پنل ادمین</a></li>
+
+            {% endif %}
+
+            <li class="{% if request.path == '/favorite-list' %}active{% endif %}">
+                <a href="{% url 'store_account:favorite_list' %}"><i class="sl sl-icon-heart"></i> محصولات مورد علاقه</a>
+            </li>
+
+            <li class="{% if request.path == '/cart-detail' %}active{% endif %}">
+                <a href="{% url 'store_cart:cart_detail' %}"><i class="sl sl-icon-wallet"></i> سبد خرید</a>
+            </li>
+
+            <li class="{% if request.path == '/cart-history' %}active{% endif %}">
+                <a href="{% url 'store_cart:cart_history' %}"><i class="icon-material-outline-history"></i> صورتحساب های قبلی</a>
+            </li>
+
+            <li class="{% if request.path == '/edit-profile' %}active{% endif %}">
+                <a href="{% url 'store_account:edit_profile' %}"><i class="fa fa-edit"></i> ویرایش پروفایل</a>
+            </li>
+
+            <li class="{% if request.path == '/change-password' %}active{% endif %}">
+                <a href="{% url 'store_account:change_password' %}"><i class="sl sl-icon-key"></i> تغییر رمز عبور</a>
+            </li>
+
+            <li class="{% if request.path == '/tickets' %}active{% endif %}">
+                <a href="{% url 'store_ticket:tickets' %}"><i class="im-icon-Support im "></i> پشتیبانی</a>
+            </li>
+
+            <li>
+                <a href="{% url 'store_main:logout' %}"><i class="sl sl-icon-power"></i>خروج از حساب</a>
+            </li>
+
+        </ul>
+    </div>
+</div>

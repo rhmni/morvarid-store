@@ -1,0 +1,68 @@
+{% extends 'store_account/shared/base.html' %}
+
+{% block costume_js %}
+    <script>
+        (function ($) {
+            try {
+                var jscr1 = $('.js-scrollbar');
+                if (jscr1[0]) {
+                    const ps1 = new PerfectScrollbar('.js-scrollbar');
+
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        })(jQuery);
+    </script>
+{% endblock %}
+
+
+{% block dashboard %}
+
+
+    <div id="titlebar" class="dashboard_gradient">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>پروفایل</h2>
+                <nav id="breadcrumbs">
+                    <ul>
+                        <li><a href="{% url 'store_main:home' %}">صفحه اصلی</a></li>
+                        <li>پروفایل</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="row margin-bottom-50">
+        <div class="col-md-12">
+            <div class="utf_blog_post utf_single_post ">
+                <div class="utf_post_content">
+                    <h3>اطلاعات حساب کاربری</h3>
+                    <hr>
+                    <p>نام : {{ request.user.first_name }}</p>
+                    <p>نام خانوادگی :
+                        {% if request.user.last_name %}{{ request.user.last_name }}{% else %}{% endif %}</p>
+                    <p>موبایل :
+                        {% if request.user.phone %}{{ request.user.phone }}{% else %} {% endif %}</p>
+                    <p>آدرس ایمیل : {{ request.user.email }}</p>
+                    <p>کد ملی :
+                        {% if request.user.code_meli %}{{ request.user.code_meli }}{% else %} {% endif %}</p>
+                    <p>استان :
+                        {% if request.user.ostan %}{{ request.user.ostan }}{% else %} {% endif %}</p>
+                    <p>شهر :
+                        {% if request.user.shahr %}{{ request.user.shahr }}{% else %} {% endif %}</p>
+                    <p>آدرس :
+                        {% if request.user.address %}{{ request.user.address }}{% else %} {% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+
+
+

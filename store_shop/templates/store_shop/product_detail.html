@@ -1,0 +1,312 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% load filters %}
+
+
+{% block costume_js %}
+    <script src="{% static 'main/scripts/quantityButtons.js' %}"></script>
+    <script>
+        function close_panel_dropdown() {
+            $('.panel-dropdown').removeClass("active");
+            $('.fs-inner-container.content').removeClass("faded-out");
+        }
+
+        $('.panel-dropdown a').on('click', function (e) {
+            if ($(this).parent().is(".active")) {
+                close_panel_dropdown();
+            } else {
+                close_panel_dropdown();
+                $(this).parent().addClass('active');
+                $('.fs-inner-container.content').addClass("faded-out");
+            }
+            e.preventDefault();
+        });
+    </script>
+{% endblock %}
+
+
+{% block content %}
+
+    <div id="utf_listing_gallery_part" class="utf_listing_section">
+        <div class="utf_listing_slider utf_gallery_container margin-bottom-0">
+            {% for gallery in product.gallery.all %}
+
+                <a href="{{ gallery.image.url }}"
+                   data-background-image="{{ gallery.image.url }}" class="item utf_gallery"></a>
+
+            {% endfor %}
+
+
+
+            <a href="{{ product.image.url }}"
+               data-background-image="{{ product.image.url }}" class="item utf_gallery"></a>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row utf_sticky_main_wrapper">
+
+            <div class="col-lg-8 col-md-8">
+                <div id="titlebar" class="utf_listing_titlebar">
+                    <div class="utf_listing_titlebar_title">
+                        <h2>{{ product.title }} <span class="listing-tag">{{ product.category }}</span></h2>
+                        <br>
+                        <hr>
+
+                        <div class="col-md-offset-8 col-md-4 text-center">
+
+                            {% if is_favorite %}
+
+                                <a href="{% url 'store_favorite:delete_favorite_product' product.id %}">
+                                    <div class="badge-canceled rounded-circle">حذف از مورد علاقه ها</div>
+                                </a>
+
+                            {% else %}
+
+                                <a href="{% url 'store_favorite:add_favorite_product' product.id %}">
+                                    <div class="badge-primary rounded-circle">ذخیره در مورد علاقه ها</div>
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+                        <br>
+
+                    </div>
+                </div>
+                <div id="utf_listing_overview" class="utf_listing_section">
+                    <h3 class="utf_listing_headline_part margin-top-30 margin-bottom-30">توضیحات</h3>
+                    <p>{{ product.description }}</p>
+                    <div id="utf_listing_tags" class="utf_listing_section listing_tags_section margin-bottom-10 margin-top-0">
+                        <a><i class="sl sl-icon-phone" aria-hidden="true"></i> 0{{ setting.mobile }}</a>
+                    </div>
+                    <div class="social-contact">
+                        <a href="{{ setting.telegram }}" class="twitter-link"><i class="fa-paper-plane fa"></i> تلگرام</a>
+                        <a href="{{ setting.instagram }}" class="instagram-link"><i class="fa fa-instagram"></i> اینستاگرام</a>
+                        <a href="mailto:{{ setting.email }}" class="linkedin-link"><i class="fa fa-envelope-o"></i> ایمیل</a>
+                    </div>
+                </div>
+
+                {% if product.tag.exists %}
+
+
+                    <div id="utf_listing_tags" class="utf_listing_section listing_tags_section">
+                        <h3 class="utf_listing_headline_part margin-top-30 margin-bottom-40">برچسب ها</h3>
+                        {% for tag in product.tag.all %}
+                            <a href="/products?search={{ tag }}"><i class="fa fa-tag" aria-hidden="true"></i> {{ tag }}</a>
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+
+
+
+                {% if product.feature.exists %}
+
+
+                    <div id="utf_listing_amenities" class="utf_listing_section">
+                        <h3 class="utf_listing_headline_part margin-top-50 margin-bottom-40">ویژگی های محصول</h3>
+                        <ul class="utf_listing_features checkboxes margin-top-0">
+                            {% for feature in product.feature.all %}
+                                <li>{{ feature }}</li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+
+                {% endif %}
+
+                <div class="utf_listing_section">
+                    <h3 class="utf_listing_headline_part margin-top-50 margin-bottom-40">نظرات
+                        <span>({{ comment_count }})</span></h3>
+
+
+                    <div class="show-more">
+                        <div class="comments utf_listing_reviews">
+                            {% if comments %}
+
+                                <ul>
+
+                                    {% for comment in comments %}
+                                        <div id="small-dialog" class="zoom-anim-dialog mfp-hide">
+                                            <div class="small_dialog_header">
+                                                <h3>پاسخ به نظر</h3>
+                                            </div>
+                                            <div class="utf_message_reply_block margin-top-0">
+                                                <form action="{% url 'store_comment:add_reply_comment' product.id comment.id %}"
+                                                      method="post">
+                                                    {{ add_reply_comment_form.text }}
+                                                    {% csrf_token %}
+                                                    <button class="button">ارسال پاسخ</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <li>
+                                            <div class="avatar"><img src="{{ comment.writer.avatar.url }}" alt=""/></div>
+                                            <div class="utf_comment_content">
+                                                <div class="utf_arrow_comment"></div>
+                                                <a href="#small-dialog" class="rate-review popup-with-zoom-anim">پاسخ دادن <i
+                                                        class="fa fa-reply"></i></a>
+                                                <div class="utf_by_comment">
+                                                    {{ comment.writer.first_name }} {{ comment.writer.last_name }}
+                                                    <span class="date"><i
+                                                            class="fa fa-clock-o"></i>{{ comment.created_date | timesince }} پیش</span>
+                                                </div>
+                                                <p>{{ comment.text }}</p>
+                                            </div>
+
+                                            <ul>
+
+                                                {% for cmt in comment.replycomments.all %}
+                                                    <li>
+
+                                                        <div class="avatar"><img src="{{ cmt.writer.avatar.url }}" alt=""/></div>
+                                                        <div class="utf_comment_content">
+                                                            <div class="utf_by_comment">
+                                                                {{ cmt.writer.first_name }} {{ cmt.writer.last_name }}
+                                                                <span class="date"><i
+                                                                        class="fa fa-clock-o"></i>{{ cmt.created_date | timesince }} پیش</span>
+                                                            </div>
+                                                            <p>{{ cmt.text }}</p>
+                                                        </div>
+
+                                                    </li>
+                                                {% endfor %}
+
+
+                                            </ul>
+
+                                        </li>
+
+                                    {% endfor %}
+
+                                </ul>
+
+                            {% else %}
+                                <div class="notification warning closeable">
+                                    <p>نظری وجود ندارد . شما اولین نفر باشید.</p>
+                                </div>
+                            {% endif %}
+
+                            <div id="utf_add_review" class="utf_add_review-box">
+                                <h3 class="utf_listing_headline_part margin-bottom-20">افزودن نظر</h3>
+                                <span class="utf_leave_rating_title text-info">تمامی افراد نظر شما را خواهند دید پس در صورت بی ادبی حساب شما مسدود خواهد شد.</span>
+
+
+                                <form method="post" id="utf_add_comment" class="utf_add_comment"
+                                      action="{% url 'store_comment:add_comment' product.id %}">
+                                    {% csrf_token %}
+                                    <fieldset>
+                                        <div>
+                                            {{ add_comment_form.text }}
+                                        </div>
+                                    </fieldset>
+                                    <button class="button">ارسال نظر</button>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <a href="#" class="show-more-button" data-more-title="نمایش بیشتر" data-less-title="نمایش کمتر"><i
+                            class="fa fa-angle-double-down"></i></a>
+
+
+                </div>
+
+
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4 col-md-4 margin-top-75 sidebar-search">
+
+
+                <div class="utf_box_widget booking_widget_box">
+                    <h3><i class="fa fa-calendar"></i> خرید
+                        <div class="price">
+                            {% if product.is_available %}
+                                {% if product.price == 0 %}
+                                    <span class="text-success">رایگان</span>
+                                {% else %}
+                                    <span>{{ product.price | price }}<small> تومان</small></span>
+                                {% endif %}
+                            {% else %}
+                                <span class="text-danger">ناموجود</span>
+                            {% endif %}
+                        </div>
+                    </h3>
+                    <form method="post" action="{% url 'store_cart:add_cart_item' product.id %}">
+                        {% csrf_token %}
+                        <div class="row with-forms margin-top-0">
+                            <div class="col-lg-12">
+                                <div class="panel-dropdown">
+                                    <a href="#">تعداد <span class="qtyTotal" name="qtyTotal"></span></a>
+                                    <div class="panel-dropdown-content">
+                                        <div class="qtyButtons">
+                                            <div class="qtyTitle">تعداد :</div>
+                                            {{ add_cart_item_form.qtyinput }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="utf_progress_button button fullwidth_block margin-top-5">افزودن به سبد خرید</button>
+                    </form>
+
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="utf_box_widget margin-top-35">
+                    <h3><i class="sl sl-icon-folder-alt"></i> دسته بندی ها</h3>
+                    <ul class="utf_listing_detail_sidebar">
+                        <li><i class="fa fa-angle-double-right"></i> <a href="{% url 'store_shop:product_list' %}">همه
+                            محصولات</a></li>
+                        {% for category in categories %}
+                            <li><i class="fa fa-angle-double-right"></i> <a
+                                    href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="utf_box_widget margin-top-35">
+                    <h3><i class="sl sl-icon-phone"></i> سوالی دارید ؟</h3>
+                    <p>اگر سوالی درباره محصولات یا هر چیز دیگری دارید هم اکنون از ما بپرسید.</p>
+                    <a class="utf_progress_button button fullwidth_block margin-top-5"
+                       href="{% url 'store_contact:contact_us' %}">ارتباط با ما</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    {% if related_products %}
+        <section class="fullwidth_block padding-top-20 padding-bottom-50">
+            <div class="container">
+                <div class="row slick_carousel_slider">
+                    <div class="col-md-12">
+                        <h3 class="headline_part centered margin-bottom-25">محصولات مشابه</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="simple_slick_carousel_block utf_dots_nav">
+                                {% for product in related_products %}
+                                    {% include 'store_shop/shared/product_component.html' %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    {% endif %}
+
+
+{% endblock %}
+
+

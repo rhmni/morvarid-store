@@ -1,0 +1,59 @@
+{% load static %}
+{% load header_component_tags %}
+<header id="header_part" class="fixed fullwidth_block dashboard">
+    <div id="header" class="not-sticky">
+        <div class="container">
+            <div class="utf_left_side">
+                <div id="logo"><a href="{% url 'store_main:home' %}">
+                    <img src="{% static 'main/images/logo.png' %}" alt=""></a> <a href="{% url 'store_main:home' %}"
+                                                                                  class="dashboard-logo">
+                    <img src="{% static 'main/images/logo2.png' %}" alt=""></a></div>
+                <div class="mmenu-trigger">
+                    <button class="hamburger utfbutton_collapse" type="button">
+				<span class="utf_inner_button_box">
+					<span class="utf_inner_section"></span>
+				</span>
+                    </button>
+                </div>
+                {% nav_header_component %}
+            </div>
+            <div class="utf_right_side">
+                <div class="header_widget">
+                    <div class="utf_user_menu">
+                        <div class="utf_user_name"><span><img width="40px" height="40px" src="{{ request.user.avatar.url }}"
+                                                              alt=""></span>
+                            {{ request.user.first_name }}
+                            {{ request.user.last_name }}
+                        </div>
+                        <ul>
+
+                            <li>
+                                <a href="{% url 'store_account:profile' %}"><i class="sl sl-icon-user"></i>پروفایل من </a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'store_account:edit_profile' %}"><i class="fa fa-edit"></i>ویرایش پروفایل</a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'store_account:favorite_list' %}"><i class="sl sl-icon-heart"></i>مورد علاقه
+                                    ها</a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'store_cart:cart_detail' %}"><i class="sl sl-icon-wallet"></i> سبد خرید</a>
+                            </li>
+
+
+                            <li>
+                                <a href="{% url 'store_main:logout' %}"><i class="sl sl-icon-power"></i>خروج از حساب </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="clearfix"></div>

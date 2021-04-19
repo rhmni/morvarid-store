@@ -1,0 +1,25 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="margin-top-115 margin-bottom-90">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="style-1 element_tab">
+                        <ul class="utf_tabs_nav">
+                            <li class="active pull-right"><a href="#tab1b">درباره ما</a></li>
+                            <li class="pull-right"><a href="#tab2b">آدرس شرکت</a></li>
+                        </ul>
+                        <div class="tab_container">
+                            <div class="tab_content" id="tab1b">{{ setting.about_us }}</div>
+                            <div class="tab_content" id="tab2b">{{ setting.address }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
